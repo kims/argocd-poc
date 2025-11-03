@@ -1,6 +1,6 @@
 name: external-portal-ui
 image:
-  repository: 192.168.49.2/ui
+  repository: registry.kube-system.svc.cluster.local:5000/ui
   tag: dev-latest
 replicas: 1
 port: 80

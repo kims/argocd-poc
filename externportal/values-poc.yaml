@@ -1,6 +1,6 @@
 name: external-portal-ui
 image:
-  repository: 192.168.149.2:30500/ui
+  repository: 192.168.49.2:30500/ui
   tag: dev-latest
 replicas: 1
 port: 80

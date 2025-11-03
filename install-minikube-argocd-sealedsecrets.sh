@@ -2,6 +2,16 @@
 minikube delete
 #minikube start 
 minikube start --insecure-registry="192.168.49.2:30500"
+minikube addons enable registry
+
+kubectl -n kube-system patch svc registry \
+  --type='json' \
+  -p='[
+    {"op":"replace","path":"/spec/type","value":"NodePort"},
+    {"op":"replace","path":"/spec/ports/0/nodePort","value":30500},
+    {"op":"replace","path":"/spec/ports/0/port","value":80},
+    {"op":"replace","path":"/spec/ports/0/targetPort","value":5000}
+  ]'
 
 # Install ArgoCD
 kubectl create namespace argocd

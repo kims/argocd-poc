@@ -1,7 +1,7 @@
 #!/bin/bash
 minikube delete
 #minikube start 
-minikube start --insecure-registry="localhost:5000"
+minikube start --insecure-registry="192.168.49.2:35000"
 
 # Install ArgoCD
 kubectl create namespace argocd

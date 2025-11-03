@@ -45,6 +45,6 @@ K_VERSION=$(curl -sL https://api.github.com/repos/bitnami/sealed-secrets/release
 
 sleep 10
 
-kubectl create secret generic dev1-db-pass --from-literal=username=dev1 --from-literal=password=dev123 --dry-run=client -o json | kubeseal --namespace=dev1 --format=yaml > externportal/templates/SealedSecret.db-pass.yaml
+kubectl create secret generic dev1-db-pass --from-literal=username=dev1 --from-literal=password=dev123 --dry-run=client -o json | kubeseal --namespace=eniac-dev --format=yaml > externportal/templates/SealedSecret.db-pass.yaml
 
 git add *; git commit -m "new"; git push

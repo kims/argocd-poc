@@ -9,4 +9,3 @@ service:
   type: NodePort
   public:
     port: 30100
-

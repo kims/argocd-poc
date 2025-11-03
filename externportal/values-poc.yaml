@@ -1,0 +1,11 @@
+name: external-portal-ui
+image:
+  repository: ui
+  tag: dev-latest
+replicas: 1
+port: 80
+service:
+  type: NodePort
+  public:
+    port: 30100
+

@@ -1,0 +1,27 @@
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: eniac
+  namespace: argocd
+spec:
+  description: Project for app1 applications
+  
+  # Allow deployments to app1 namespace only
+  destinations:
+  - namespace: eniac-dev
+    server: https://kubernetes.default.svc
+  
+  # Allow access to repo-app1
+  sourceRepos:
+  - https://github.com/kims/argocd-poc.git
+  
+  # Cluster resource whitelist
+  clusterResourceWhitelist:
+  - group: ''
+    kind: Namespace
+  
+  # Namespace resource whitelist (all resources in app1 namespace)
+  namespaceResourceWhitelist:
+  - group: '*'
+    kind: '*'

@@ -1,0 +1,12 @@
+name: external-portal-ui
+image:
+  repository: registry.wisint.se/devit/eniac/externportal/ui
+  tag: 0.0.1
+  registrySecretRef: registry-secret-ref
+replicas: 1
+port: 80
+service:
+  type: NodePort
+  public:
+    port: 30100
+

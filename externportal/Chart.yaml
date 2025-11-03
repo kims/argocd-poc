@@ -1,0 +1,4 @@
+apiVersion: v2
+name: external-portal-chart
+description: Helm chart for external portal
+version: 0.0.1

@@ -80,9 +80,5 @@ helm install sealed-secrets -n kube-system \
 
 sleep 1
 
-K_VERSION=$(curl -sL https://api.github.com/repos/bitnami/sealed-secrets/releases/latest | grep '"tag_name"' | awk -F': ' '{print $2}' | tr -d '",'); [ -x /usr/local/bin/kubeseal ] || { curl -sLO "https://github.com/bitnami/sealed-secrets/releases/download/${K_VERSION}/kubeseal-linux-amd64" && sudo install -m 755 kubeseal-linux-amd64 /usr/local/bin/kubeseal && rm kubeseal-linux-amd64; } && kubeseal version
+K_VERSION=$(curl -sL https://api.github.com/repos/bitnami/sealed-secrets/releases/latest | grep '"tag_name"' | awk -F': ' '{print $2}' | tr -d '",'); [ -x /usr/local/bin/kubeseal ] || { curl -sLO "https://github.com/bitnami/sealed-secrets/releases/download/${K_VERSION}/kubeseal-linux-amd64" && sudo install -m 755 kubeseal-linux-amd64 /usr/local/bin/kubeseal && rm kubeseal-linux-amd64; } 
 
-
-kubectl create secret generic dev1-db-pass --from-literal=username=dev1 --from-literal=password=dev123 --dry-run=client -o json | kubeseal --namespace=caine-dev --format=yaml > externportal/templates/SealedSecret.db-pass.yaml
-
-git add *; git commit -m "new"; git push

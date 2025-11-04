@@ -1,11 +1,11 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: externportal
+  name: externportal-test
   namespace: argocd
 spec:
   destination:
-    namespace: caine-dev 
+    namespace: caine-test
     server: https://kubernetes.default.svc
   project: caine
   source:
@@ -14,5 +14,4 @@ spec:
     targetRevision: HEAD
     helm:
       valueFiles:
-        - values-poc.yaml
-
+        - values-test.yaml

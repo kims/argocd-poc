@@ -3,13 +3,15 @@
 ARGOCD_SERVER="localhost:8080"
 ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
 
-#pull external image from registry and push to internal
-
+#create sealed secret and commit all files
+kubectl create secret generic dev1-db-pass --from-literal=username=dev1 --from-literal=password=dev123 --dry-run=client -o json | kubeseal --namespace=caine-dev --format=yaml > externportal/templates/SealedSecret.db-pass.yaml
+git add *; git commit -m "new"; git push
 
 #creat apps
 kubectl create namespace caine-dev --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -f AppProjects.app-project.yaml
-kubectl create -f externportal/Application.yaml
+kubectl create -f externportal/Application-dev.yaml
+kubectl create -f externportal/Application-test.yaml
 
 #Create config for poc users/projects
 kubectl patch configmap argocd-cm -n argocd --patch-file ConfigMap.argocd-cm-patch.yaml
@@ -46,8 +48,5 @@ echo ""
 echo "CLI:"
 echo "argocd login $ARGOCD_SERVER --username admin --password "$ADMIN_PASSWORD" --insecure"
 echo "argocd login $ARGOCD_SERVER --username dev1 --password "password123" --insecure"
-echo "argocd login $ARGOCD_SERVER --username dev2 --password "password123" --insecure"
 echo ""
-echo "argocd app sync app1"
-echo "argocd app sync app2"
-
+echo "argocd app sync externportal-dev"

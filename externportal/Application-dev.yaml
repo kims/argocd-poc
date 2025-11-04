@@ -1,0 +1,17 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: externportal-dev
+  namespace: argocd
+spec:
+  destination:
+    namespace: caine-dev 
+    server: https://kubernetes.default.svc
+  project: caine
+  source:
+    path: externportal/
+    repoURL: https://github.com/kims/argocd-poc
+    targetRevision: HEAD
+    helm:
+      valueFiles:
+        - values-dev.yaml

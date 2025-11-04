@@ -5,23 +5,21 @@ metadata:
   name: caine
   namespace: argocd
 spec:
-  description: Project for app1 applications
+  description: Caine Project
   
-  # Allow deployments to app1 namespace only
   destinations:
   - namespace: caine-dev
     server: https://kubernetes.default.svc
+  - namespace: caine-test
+    server: https://kubernetes.default.svc
   
-  # Allow access to repo-app1
   sourceRepos:
   - https://github.com/kims/argocd-poc.git
-  
-  # Cluster resource whitelist
+
   clusterResourceWhitelist:
   - group: ''
     kind: Namespace
-  
-  # Namespace resource whitelist (all resources in app1 namespace)
+
   namespaceResourceWhitelist:
   - group: '*'
     kind: '*'

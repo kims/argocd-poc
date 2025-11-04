@@ -1,6 +1,7 @@
 #!/bin/bash
 MINIKUBE_IP="192.168.49.2"
-REGISTRY_HOSTNAME="my-repo.local"
+INT_REGISTRY_HOSTNAME="my-repo.local"
+EXT_REGISTRY_HOSTNAME=$(echo $1 | awk -F"/" '{print $1}')
 
 minikube delete
 
@@ -11,8 +12,8 @@ echo 'ff00::0 ip6-mcastprefix' >> ~/.minikube/files/etc/hosts
 echo 'ff02::1 ip6-allnodes' >> ~/.minikube/files/etc/hosts
 echo 'ff02::2 ip6-allrouters' >> ~/.minikube/files/etc/hosts
 echo "$(minikube ip) control-plane.minikube.internal" >> ~/.minikube/files/etc/hosts
-echo "$(minikube ip) ${REGISTRY_HOSTNAME}" >> ~/.minikube/files/etc/hosts
-echo "172.18.10.100 $1" >> ~/.minikube/files/etc/hosts
+echo "$(minikube ip) ${INT_REGISTRY_HOSTNAME}" >> ~/.minikube/files/etc/hosts
+echo "172.18.10.100 ${EXT_REGISTRY_HOSTNAME}" >> ~/.minikube/files/etc/hosts
 
 minikube start  --static-ip $MINIKUBE_IP  --insecure-registry="${MINIKUBE_IP}:30500" --insecure-registry="172.18.10.100"
 sed -i "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${MINIKUBE_IP}/" externportal/values-poc.yaml
@@ -25,6 +26,18 @@ kubectl -n kube-system patch svc registry \
     {"op":"replace","path":"/spec/ports/0/port","value":80},
     {"op":"replace","path":"/spec/ports/0/targetPort","value":5000}
   ]'
+
+
+MINIKUBE_COMMAND_CHAIN="
+docker login $EXT_REGISTRY_HOSTNAME
+docker pull $1
+docker tag $1 192.168.49.2:30500/ui:dev-latest
+docker push  192.168.49.2:30500/ui:dev-latest 
+"
+
+# Execute the entire command chain on Minikube
+minikube ssh -- "${MINIKUBE_COMMAND_CHAIN}"
+
 
 # Install ArgoCD
 kubectl create namespace argocd

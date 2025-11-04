@@ -1,11 +1,9 @@
 #!/bin/bash
+MINIKUBE_IP="192.168.49.2"
 minikube delete
-#minikube start 
-MINIKUBE_IP=$(minikube ip)
-sed "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${MINIKUBE_IP}/" externportal/values-poc.yaml
-minikube start --insecure-registry="${MINIKUBE_IP}:30500"
+minikube start  --static-ip $MINIKUBE_IP  --insecure-registry="${MINIKUBE_IP}:30500"
+sed -i "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${MINIKUBE_IP}/" externportal/values-poc.yaml
 minikube addons enable registry
-
 kubectl -n kube-system patch svc registry \
   --type='json' \
   -p='[

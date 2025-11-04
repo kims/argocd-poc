@@ -8,7 +8,8 @@ kubectl create secret generic dev1-db-pass --from-literal=username=dev1 --from-l
 git add *; git commit -m "new"; git push
 
 #creat apps
-kubectl create namespace caine-dev --dry-run=client -o yaml | kubectl apply -f -
+kubectl create namespace caine-dev 
+kubectl create namespace caine-test 
 kubectl apply -f AppProjects.app-project.yaml
 kubectl create -f externportal/Application-dev.yaml
 kubectl create -f externportal/Application-test.yaml

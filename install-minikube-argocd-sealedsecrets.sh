@@ -1,6 +1,19 @@
 #!/bin/bash
 MINIKUBE_IP="192.168.49.2"
+REGISTRY_HOSTNAME="my-repo.local"
+
 minikube delete
+
+echo '127.0.0.1 localhost' > ~/.minikube/files/etc/hosts
+echo '::1 localhost ip6-localhost ip6-loopback' >> ~/.minikube/files/etc/hosts
+echo 'fe00::0 ip6-localnet' >> ~/.minikube/files/etc/hosts
+echo 'ff00::0 ip6-mcastprefix' >> ~/.minikube/files/etc/hosts
+echo 'ff02::1 ip6-allnodes' >> ~/.minikube/files/etc/hosts
+echo 'ff02::2 ip6-allrouters' >> ~/.minikube/files/etc/hosts
+echo "$(minikube ip) control-plane.minikube.internal" >> ~/.minikube/files/etc/hosts
+echo "$(minikube ip) ${REGISTRY_HOSTNAME}" >> ~/.minikube/files/etc/hosts
+echo "172.18.10.100/ $1" >> ~/.minikube/files/etc/hosts
+
 minikube start  --static-ip $MINIKUBE_IP  --insecure-registry="${MINIKUBE_IP}:30500" --insecure-registry="172.18.10.100"
 sed -i "s/\([0-9]\{1,3\}\.\)\{3\}[0-9]\{1,3\}/${MINIKUBE_IP}/" externportal/values-poc.yaml
 minikube addons enable registry

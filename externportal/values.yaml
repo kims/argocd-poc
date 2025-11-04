@@ -1,6 +1,6 @@
 name: external-portal-ui
 image:
-  repository: registry.wisint.se/devit/eniac/externportal/ui
+  repository: registry.wisint.se/devit/caine/externportal/ui
   tag: 0.0.1
   registrySecretRef: registry-secret-ref
 replicas: 1

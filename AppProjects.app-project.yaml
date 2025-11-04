@@ -2,14 +2,14 @@
 apiVersion: argoproj.io/v1alpha1
 kind: AppProject
 metadata:
-  name: eniac
+  name: caine
   namespace: argocd
 spec:
   description: Project for app1 applications
   
   # Allow deployments to app1 namespace only
   destinations:
-  - namespace: eniac-dev
+  - namespace: caine-dev
     server: https://kubernetes.default.svc
   
   # Allow access to repo-app1

@@ -5,9 +5,9 @@ metadata:
   namespace: argocd
 spec:
   destination:
-    namespace: eniac-dev 
+    namespace: caine-dev 
     server: https://kubernetes.default.svc
-  project: eniac
+  project: caine
   source:
     path: externportal/
     repoURL: https://github.com/kims/argocd-poc

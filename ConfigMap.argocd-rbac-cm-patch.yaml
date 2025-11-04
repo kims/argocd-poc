@@ -7,10 +7,10 @@ data:
   policy.csv: |
     p, role:admin, *, *, *, allow
 
-    p, role:dev1-role, applications, *, eniac/*, allow
+    p, role:dev1-role, applications, *, caine/*, allow
     p, role:dev1-role, repositories, get, *, allow
     p, role:dev1-role, clusters, get, *, allow
-    p, role:dev1-role, projects, get, eniac, allow
+    p, role:dev1-role, projects, get, caine, allow
     
     g, dev1, role:dev1-role
     g, admin, role:admin

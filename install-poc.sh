@@ -3,6 +3,9 @@
 ARGOCD_SERVER="localhost:8080"
 ADMIN_PASSWORD=$(kubectl get secret argocd-initial-admin-secret -n argocd -o jsonpath='{.data.password}' | base64 -d)
 
+#pull external image from registry and push to internal
+
+
 #creat apps
 kubectl create namespace caine-dev --dry-run=client -o yaml | kubectl apply -f -
 kubectl apply -f AppProjects.app-project.yaml

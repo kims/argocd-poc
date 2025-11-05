@@ -1,5 +1,6 @@
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 
+#add local registry
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
 kind: ConfigMap
@@ -16,7 +17,7 @@ data:
 EOF
 
 
-
+#add google dns
 
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -56,9 +57,35 @@ data:
     }
 EOF
 
+#add git repo for write access
 
 kubectl create secret generic git-creds   --namespace argocd   --from-file=sshPrivateKey=/home/kimsv/.ssh/flux_app_key
+# patch cm to use local repo
+kubectl patch deployment argocd-image-updater -n argocd \
+  --type='json' \
+  -p='[
+    {
+      "op": "add",
+      "path": "/spec/template/spec/volumes/-",
+      "value": {
+        "name": "config-volume",
+        "configMap": {
+          "name": "argocd-image-updater-config"
+        }
+      }
+    },
+    {
+      "op": "add",
+      "path": "/spec/template/spec/containers/0/volumeMounts/-",
+      "value": {
+        "name": "config-volume",
+        "mountPath": "/app/config",
+        "readOnly": true
+      }
+    }
+  ]'
 
+# patch git repo secret + volume /tmp for write 
 kubectl patch deployment argocd-image-updater -n argocd \
   --type='json' \
   -p='[{"op": "add", "path": "/spec/template/spec/volumes", "value":[{"name":"git-creds","secret":{"secretName":"git-creds"}}]}, {"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value":[{"name":"git-creds","mountPath":"/app/config/ssh","readOnly":true}]}]'

@@ -1,4 +1,4 @@
-name: external-portal-ui
+name: ui
 namespace: caine-dev 
 image:
   repository: 192.168.49.2:30500/ui

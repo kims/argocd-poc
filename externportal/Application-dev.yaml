@@ -16,7 +16,6 @@ spec:
   project: caine
   source:
     path: externportal/
-      #  repoURL: git@github.com:kims/argocd-poc.git
     repoURL: https://github.com/kims/argocd-poc
     targetRevision: HEAD
     helm:

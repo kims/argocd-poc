@@ -78,7 +78,7 @@ helm install sealed-secrets -n kube-system \
   --set-string fullnameOverride=sealed-secrets-controller \
   sealed-secrets/sealed-secrets
 
-sleep 1
+sleep 20 #sleep for sealed secrets bootup
 
 K_VERSION=$(curl -sL https://api.github.com/repos/bitnami/sealed-secrets/releases/latest | grep '"tag_name"' | awk -F': ' '{print $2}' | tr -d '",'); [ -x /usr/local/bin/kubeseal ] || { curl -sLO "https://github.com/bitnami/sealed-secrets/releases/download/${K_VERSION}/kubeseal-linux-amd64" && sudo install -m 755 kubeseal-linux-amd64 /usr/local/bin/kubeseal && rm kubeseal-linux-amd64; } 
 

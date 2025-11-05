@@ -3,9 +3,10 @@ kind: Application
 metadata:
   name: externportal-dev
   namespace: argocd
-  argocd-image-updater.argoproj.io/image-list: externportal=192.168.49.2:30500/externportal
-  argocd-image-updater.argoproj.io/write-back-method: none
-  argocd-image-updater.argoproj.io/git-branch: main
+  annotations:
+    argocd-image-updater.argoproj.io/image-list: externportal=192.168.49.2:30500/externportal
+    argocd-image-updater.argoproj.io/write-back-method: none
+    argocd-image-updater.argoproj.io/git-branch: main
 spec:
   destination:
     namespace: caine-dev 

@@ -63,3 +63,23 @@ kubectl patch deployment argocd-image-updater -n argocd \
   --type='json' \
   -p='[{"op": "add", "path": "/spec/template/spec/volumes", "value":[{"name":"git-creds","secret":{"secretName":"git-creds"}}]}, {"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value":[{"name":"git-creds","mountPath":"/app/config/ssh","readOnly":true}]}]'
 
+kubectl patch deployment argocd-image-updater -n argocd \
+  --type='json' \
+  -p='[
+    {
+      "op": "add",
+      "path": "/spec/template/spec/volumes/-",
+      "value": {
+        "name": "tmp-volume",
+        "emptyDir": {}
+      }
+    },
+    {
+      "op": "add",
+      "path": "/spec/template/spec/containers/0/volumeMounts/-",
+      "value": {
+        "name": "tmp-volume",
+        "mountPath": "/tmp"
+      }
+    }
+  ]'

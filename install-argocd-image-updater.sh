@@ -1,5 +1,4 @@
-kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/main/manifests/install.yaml
-
+kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -16,6 +15,46 @@ data:
         insecure: true
 EOF
 
+
+
+
+cat <<EOF | kubectl apply -f -
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: coredns
+  namespace: kube-system
+data:
+  Corefile: |
+    .:53 {
+        log
+        errors
+        health {
+           lameduck 5s
+        }
+        ready
+        kubernetes cluster.local in-addr.arpa ip6.arpa {
+           pods insecure
+           fallthrough in-addr.arpa ip6.arpa
+           ttl 30
+        }
+        prometheus :9153
+        hosts {
+           192.168.49.1 host.minikube.internal
+           fallthrough
+        }
+        forward . 8.8.8.8 {
+           max_concurrent 1000
+        }
+        cache 30 {
+           disable success cluster.local
+           disable denial cluster.local
+        }
+        loop
+        reload
+        loadbalance
+    }
+EOF
 
 
 kubectl create secret generic git-creds   --namespace argocd   --from-file=sshPrivateKey=/home/kimsv/.ssh/flux_app_key

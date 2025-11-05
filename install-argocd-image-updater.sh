@@ -107,3 +107,20 @@ kubectl patch deployment argocd-image-updater -n argocd \
       }
     }
   ]'
+
+
+# enable debug logs
+kubectl -n argocd patch deployment argocd-image-updater \
+  --type='json' \
+  -p='[
+    {
+      "op": "add",
+      "path": "/spec/template/spec/containers/0/args/-",
+      "value": "--loglevel"
+    },
+    {
+      "op": "add",
+      "path": "/spec/template/spec/containers/0/args/-",
+      "value": "debug"
+    }
+  ]'

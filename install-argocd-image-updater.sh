@@ -1,5 +1,7 @@
 kubectl apply -n argocd -f https://raw.githubusercontent.com/argoproj-labs/argocd-image-updater/stable/manifests/install.yaml
 
+argocd app sync external-dev
+
 #add local registry
 cat <<EOF | kubectl apply -f -
 apiVersion: v1
@@ -124,3 +126,5 @@ kubectl -n argocd patch deployment argocd-image-updater \
       "value": "debug"
     }
   ]'
+
+

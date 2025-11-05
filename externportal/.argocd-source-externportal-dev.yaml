@@ -4,5 +4,5 @@ helm:
     value: 192.168.49.2:30500/ui
     forcestring: true
   - name: image.tag
-    value: dev-latest7
+    value: dev-latest11
     forcestring: true

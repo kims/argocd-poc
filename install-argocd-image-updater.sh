@@ -58,8 +58,9 @@ data:
 EOF
 
 #add git repo for write access
+echo PAT token for registry write
+argocd repo add https://github.com/kims/argocd-poc.git   --username kims
 
-kubectl create secret generic git-creds   --namespace argocd   --from-file=sshPrivateKey=/home/kimsv/.ssh/flux_app_key
 # patch cm to use local repo
 kubectl patch deployment argocd-image-updater -n argocd \
   --type='json' \
@@ -86,10 +87,6 @@ kubectl patch deployment argocd-image-updater -n argocd \
   ]'
 
 # patch git repo secret + volume /tmp for write 
-kubectl patch deployment argocd-image-updater -n argocd \
-  --type='json' \
-  -p='[{"op": "add", "path": "/spec/template/spec/volumes", "value":[{"name":"git-creds","secret":{"secretName":"git-creds"}}]}, {"op": "add", "path": "/spec/template/spec/containers/0/volumeMounts", "value":[{"name":"git-creds","mountPath":"/app/config/ssh","readOnly":true}]}]'
-
 kubectl patch deployment argocd-image-updater -n argocd \
   --type='json' \
   -p='[

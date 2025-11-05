@@ -6,6 +6,7 @@ metadata:
   annotations:
     argocd-image-updater.argoproj.io/image-list: ui=192.168.49.2:30500/ui
     argocd-image-updater.argoproj.io/write-back-method: git
+    argocd-image-updater.argoproj.io/ui.update-strategy: name
     argocd-image-updater.argoproj.io/git-branch: main
     argocd-image-updater.argoproj.io/image-name.ui: image
 spec:
@@ -15,6 +16,7 @@ spec:
   project: caine
   source:
     path: externportal/
+      #  repoURL: git@github.com:kims/argocd-poc.git
     repoURL: https://github.com/kims/argocd-poc
     targetRevision: HEAD
     helm:

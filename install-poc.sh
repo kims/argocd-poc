@@ -29,8 +29,6 @@ kubectl patch secret argocd-secret -n argocd --type merge \
     \"accounts.dev1.passwordMtime\":\"$(date -u +%Y-%m-%dT%H:%M:%SZ)\"
   }}"
 
-argocd repo add git@github.com:kims/argocd-poc --ssh-private-key-path ~/.ssh/flux_app_key
-
 #restart to enable new users/passwords
 kubectl rollout restart deployment argocd-server -n argocd
 kubectl rollout restart deployment argocd-repo-server -n argocd
